@@ -315,4 +315,6 @@ cp wget.log wget.log.bak
  
 - Lalu akan dilakukan backup menuju file wget.log.bak
 
+![Screenshot from 2020-02-21 16-36-57](https://user-images.githubusercontent.com/56763600/75027937-f5629c80-54d1-11ea-8865-f312c87ac69f.png)
+
 **TERIMA KASIH**
