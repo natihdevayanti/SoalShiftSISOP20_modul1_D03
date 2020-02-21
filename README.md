@@ -12,8 +12,11 @@ Elvira Catrine Natalie (05111840000016)
 ### CAESAR CIPHER
 ## 2a dan b 
 ## Membuat sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 karakter yang disimpan di file
+
 Dalam soal ini, kita diminta untuk sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 karakter yang terdapat huruf besar, huruf kecil, dan angka. Password acak tersebut disimpan pada file berekstensi .txt dengan nama berdasarkan argumen yang diinputkan dan ​HANYA ​berupa alphabet​.
+
 > Langkah dan Penjelasan
+
 Kita generate password sepanjang 28 karakter alfanumerik dengan menggunakan perintah berikut
 
 ```
@@ -132,3 +135,41 @@ Pada codingan ini, line 1-12 memiliki syntax yang sama seperti syntax pada soal2
 Kemudian perintah `mv $1 "$decrypt".txt` digunakan untuk mengubah file menjadi nama semula. 
 
 **Jika input file tidak sesuai, maka akan muncul pemberitahuan bahwa file tidak ditemukan**
+
+
+### SOAL 3
+## 3a
+
+Mendownload 28 gambar dari link yang sudah tersedia dengan fungsi wget dan mengubah nama filenya dengan fungsi -0
+
+```
+
+#!/bin/bash
+for i in {1..28}
+do
+wget -O pdkt_kusuma_$i https://loremflickr.com/320/240/cat -a wget.log
+done
+
+```
+
+- Kita gunakan -a untuk menambahkan lalu -0 untuk mengubah nama file menjadi “pdkt_kusuma_$i” dimana maksud dari $i adalah penomoran (iterasi) -> `sebanyak 28 gambar` saat mendownload gambar. 
+- Menggunakan fungsi wget untuk langsung mendownload file yang ada di website dan wget.log untuk menyimpan file yang sudah didownload
+
+## 3b
+
+Script download hanya berjalan setiap 8 jam dimulai dari pukul 6.05 setiap hari kecuali hari Sabtu, maka dibuat cron job sebagai berikut
+
+```
+
+crontab -e
+
+5 6-23/8 * * 0-5 /home/<user>/soal3.sh
+
+```
+
+`5 6-23/8 * * 0-5`
+- 5 adalah menit ke-5
+- 6-23/8 adalah setiap 8 jam dari pukul 06.00-23.00
+- 0-5 adalah hari minggu - jumat (setiap hari kecuali hari sabtu)
+
+## 3c
