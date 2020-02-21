@@ -241,7 +241,7 @@ Script download hanya berjalan setiap 8 jam dimulai dari pukul 6.05 setiap hari 
 
 crontab -e
 
-5 6-23/8 * * 0-5 /home/<user>/soal3.sh
+5 6-23/8 * * 0-5 /home/elvira/soal3.sh
 
 ```
 
@@ -252,4 +252,58 @@ crontab -e
 
 ### 3c
 
+Membuat sebuah script untuk mengidentifikasi gambar yang identik dari keseluruhan
+gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka
+sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate
+dengan format filename "duplicate_nomor" (contoh : duplicate_200, duplicate_201).
+Setelah itu lakukan pemindahan semua gambar yang tersisa kedalam folder ./kenangan
+dengan format filename "kenangan_nomor" (contoh: kenangan_252, kenangan_253).
+Setelah tidak ada gambar di ​current directory​, maka lakukan backup seluruh log menjadi ekstensi ".log.bak"
 
+code
+
+```
+
+#!/bin/bash
+
+grep "Location" wget.log > location.log
+readarray line < location.log
+
+for i in {1..28}
+do
+for j in {1..28}
+do
+if [ $i == $j ]
+then
+continue
+
+elif [ "${line[$i]}" == "${line[$j]}" ]
+then
+mv pdkt_kusuma_"$i".jpg ./duplicate/duplicate_"$i".jpg
+fi
+done
+done
+
+for i in {1..28}
+do 
+mv pdkt_kusuma_"$i".jpg ./kenangan/kenangan_"$1".jpg
+done
+cp wget.log wget.log.bak
+
+```
+
+> Langkah dan Penjelasan
+
+- Logfile wget.log yang terdapat karakter "Location" disimpan pada file "location.log"
+
+- `mkdir kenangan` dan `mkdir duplicate` untuk membuat folder kenangan dan duplicate
+
+- Untuk pengecekan gambar, maka dilakukan dengan for nested
+
+- Jika locationnya sama, maka gambar tsb identik dan nantinya dipindahkan ke folder `duplicate`
+
+- Jika gambar tidak berduplikat, maka dipindahkan ke folder `kenangan` dan namanya diganti menjadi kenangan + penomorannya. 
+ 
+- Lalu akan dilakukan backup menuju file wget.log.bak
+
+**TERIMA KASIH**
