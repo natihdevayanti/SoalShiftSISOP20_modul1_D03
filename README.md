@@ -39,6 +39,8 @@ echo "$a"
 
 **b. Menentukan 2 State dengan Profit Minimum berdasarkan hasil 1 a**
 
+> Langkah dan Penjelasan
+
 Code
 ```
 
@@ -62,6 +64,8 @@ echo "$b"
 
 **c. Menentukan 10 Product Name dengan Profit Minimum berdasarkan hasil 1 b**
 
+> Langkah dan Penjelasan
+
 Code
 ```
 
@@ -72,15 +76,15 @@ echo "$c"
 ```
 > memiliki syntax mirip seperti soal no.1b
 
-`if($11 == "Texas" || $11 == "Illinois")` untuk menentukan kolom product name berdasarkan state yang telah didapat pada 1 b, yaitu Texas dan Illinois
+- `if($11 == "Texas" || $11 == "Illinois")` untuk menentukan kolom product name berdasarkan state yang telah didapat pada 1 b, yaitu Texas dan Illinois
 
-`Data[$17] += $21` untuk menjumlahkan nilai profit berdasarkan kolom `product name`
+- `Data[$17] += $21` untuk menjumlahkan nilai profit berdasarkan kolom `product name`
 
-`for (i in Data) print Data[i],i` akumulasi data dan output
+- `for (i in Data) print Data[i],i` akumulasi data dan output
 
-`sort -g` mengurutkan hasil yang didapat secara ascending
+- `sort -g` mengurutkan hasil yang didapat secara ascending
 
-`head -10` mendapatkan hasil 10 urutan teratas
+- `head -10` mendapatkan hasil 10 urutan teratas
 
 
 ## SOAL 2 
@@ -92,7 +96,7 @@ Dalam soal ini, kita diminta untuk sebuah script bash yang dapat menghasilkan pa
 
 > Langkah dan Penjelasan
 
-Kita generate password sepanjang 28 karakter alfanumerik dengan menggunakan perintah berikut
+- Kita generate password sepanjang 28 karakter alfanumerik dengan menggunakan perintah berikut
 
 ```
 if [[ $1 =~ ^[a-zA-Z]+$ ]]
@@ -179,6 +183,7 @@ Variabel `encrypt` dalam `encrypt="$(echo "$nama" | tr [A-Z] ["$up1"-ZA-"$up2"] 
 Membuat dekripsinya supaya nama file bisa kembali.
 
 > Langkah dan Penjelasan
+
 > Code
 
 ```
@@ -220,6 +225,10 @@ Kemudian perintah `mv $1 "$decrypt".txt` digunakan untuk mengubah file menjadi n
 
 Mendownload 28 gambar dari link yang sudah tersedia dengan fungsi wget dan mengubah nama filenya dengan fungsi -0
 
+> Langkah dan Penjelasan
+
+Code 
+
 ```
 
 #!/bin/bash
@@ -237,6 +246,10 @@ done
 
 Script download hanya berjalan setiap 8 jam dimulai dari pukul 6.05 setiap hari kecuali hari Sabtu, maka dibuat cron job sebagai berikut
 
+> Langkah dan Penjelasan
+
+Code
+
 ```
 
 crontab -e
@@ -252,15 +265,11 @@ crontab -e
 
 ### 3c
 
-Membuat sebuah script untuk mengidentifikasi gambar yang identik dari keseluruhan
-gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka
-sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate
-dengan format filename "duplicate_nomor" (contoh : duplicate_200, duplicate_201).
-Setelah itu lakukan pemindahan semua gambar yang tersisa kedalam folder ./kenangan
-dengan format filename "kenangan_nomor" (contoh: kenangan_252, kenangan_253).
-Setelah tidak ada gambar di ​current directory​, maka lakukan backup seluruh log menjadi ekstensi ".log.bak"
+Membuat sebuah script untuk mengidentifikasi gambar yang identik dari keseluruhan gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate dengan format filename "duplicate_nomor" (contoh : duplicate_200, duplicate_201). Setelah itu lakukan pemindahan semua gambar yang tersisa kedalam folder ./kenangan dengan format filename "kenangan_nomor" (contoh: kenangan_252, kenangan_253). Setelah tidak ada gambar di ​current directory​, maka lakukan backup seluruh log menjadi ekstensi ".log.bak"
 
-code
+> Langkah dan Penjelasan
+
+Code
 
 ```
 
@@ -298,7 +307,7 @@ cp wget.log wget.log.bak
 
 - `mkdir kenangan` dan `mkdir duplicate` untuk membuat folder kenangan dan duplicate
 
-- Untuk pengecekan gambar, maka dilakukan dengan for nested
+- Untuk pengecekan gambar, maka dilakukan dengan for nested (iterasi 1-28)
 
 - Jika locationnya sama, maka gambar tsb identik dan nantinya dipindahkan ke folder `duplicate`
 
