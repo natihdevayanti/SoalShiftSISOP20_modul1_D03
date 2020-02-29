@@ -24,24 +24,22 @@ mkdir duplicate
 
 grep "Location" wget.log > location.log
 readarray line < location.log
-
-for i in {1..28}
+for ((i=0; i<28; i++))
 do
-for j in {1..28}
+for ((j=0; j<=i; j++))
 do
 if [ $i == $j ]
 then
 continue
-
 elif [ "${line[$i]}" == "${line[$j]}" ]
 then
-mv pdkt_kusuma_"$i".jpg ./duplicate/duplicate_"$i".jpg
+mv pdkt_kusuma_"$(($i+1))".jpg ./duplicate/duplicate_"$i".jpg
 fi
 done
 done
 
-for i in {1..28}
+for ((i=1; i<=28; i++))
 do
-mv pdkt_kusuma_"$i".jpg ./kenangan/kenangan_"$1".jpg
+mv pdkt_kusuma_"$i".jpg ./kenangan/kenangan_"$i".jpg
 done
 cp wget.log wget.log.bak
