@@ -19,7 +19,7 @@ Code:
 ```
 
 echo "Soal 1: "
-a=$(awk -F"\t" 'NR > 1 {Data[$13] += $21} END { for (i in Data) print Data[i],i }' /Users/putrinatih/Downloads/Sample-Superstore.tsv | sort -g | head -1)
+a=$(awk -F"\t" 'NR > 1 {Data[$13] += $21} END { for (i in Data) print Data[i], i }' /Users/putrinatih/Downloads/Sample-Superstore.tsv | sort -g | head -1 | awk '{print $2}' )
 echo "$a"
 
 ```
@@ -30,12 +30,15 @@ echo "$a"
 
 - `Data[$13] += $21` menjumlahkan nilai profit berdasarkan kolom regionnya
 
+- `/Users/putrinatih/Downloads/Sample-Superstore.tsv` merupakan lokasi file serta nama file yang datanya diolah pada program ini
+
 - `for (i in Data) print Data[i],i` looping untuk akumulasi dan sebagai output
 
 - `sort -g` mengurutkan hasil yang didapatkan secara ascending
 
 - `head -1` mendapatkan hasil urutan teratas (minimum)
 
+- `awk '{print $2}'` untuk mengambil data region dengan profit minimum.
 
 **b. Menentukan 2 State dengan Profit Minimum berdasarkan hasil 1 a**
 
@@ -45,8 +48,8 @@ Code
 ```
 
 echo "Soal 2: "
-b=$(awk -F"\t" 'NR > 1 {if ($13 == "Central") {Reg[$11] += $21}} END { for (i in Reg) print Reg[i],i }' /Users/putrinatih/Downloads/Sample-Superstore.tsv | sort -g | head -2)
-echo "$b"
+b=$(awk -F"\t" 'NR > 1 {if ($13 == "Central") {Reg[$11] += $21}} END { for (i in Reg) print Reg[i], i }' /Users/putrinatih/Downloads/Sample-Superstore.tsv | sort -g | head -2 | awk '{print $2}' )
+echo "$b
 
 ```
 
@@ -62,6 +65,8 @@ echo "$b"
 
 - `head -2` untuk mendapatkan hasil 2 urutan teratas
 
+- `awk '{print $2}'` untuk mengambil 2 state dengan profit minimum.
+
 **c. Menentukan 10 Product Name dengan Profit Minimum berdasarkan hasil 1 b**
 
 > Langkah dan Penjelasan
@@ -70,8 +75,9 @@ Code
 ```
 
 echo "Soal 3: "
-c=$(awk -F"\t" 'NR > 1 {if ($13 == "Central") {if ($11 == "Texas" || $11 == "Illinois") {Data[$17] += $21} } } END { for (i in Data) print Data[i],i }' /Users/putrinatih/Downloads/Sample-Superstore.tsv | sort -g | head -10)
+c=$(awk -F"\t" 'BEGIN { OFS=" "} {if ($13 == "Central") {if ($11 == "Texas" || $11 == "Illinois") {Data[$17] += $21} } } END { for (i in Data) print Data[i],i }' /Users/putrinatih/Downloads/Sample-Superstore.tsv | sort -g | head -10 | awk 'BEGIN {FS=" "} {print $2}' )
 echo "$c"
+
 
 ```
 > memiliki syntax mirip seperti soal no.1b
@@ -85,6 +91,13 @@ echo "$c"
 - `sort -g` mengurutkan hasil yang didapat secara ascending
 
 - `head -10` mendapatkan hasil 10 urutan teratas
+
+- `awk '{print $2}'` untuk mengambil data 10 product name dengan profit minimum.
+
+- `OFS` adalah karakter spasi tunggal (dalam hal ini berupa spasi).
+
+- `FS` adalah setiap karakter atau ekspresi reguler yang digunakan sebagai pemisah bidang input (dalam hal ini adalah spasi)
+
 
 
 ## SOAL 2 
@@ -141,15 +154,16 @@ up1=${upper[hour]}
 low1=${lower[hour]}
 up2=${upper[hour1]}
 low2=${lower[hour1]}
-rdm="$(LC_CTYPE=C tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c28)" || true
 encrypt="$(echo "$nama" | tr [A-Z] ["$up1"-ZA-"$up2"] | tr [a-z] ["$low1"-za-"$low2"])"
-echo $rdm > "$encrypt".txt
+mv $1 "$encrypt".txt
 echo "selamat! file anda telah di enkripsi!"
 else
 echo "Harap menggunakan Alfabet"
 fi
 
+
 ```
+
 `nama=$(echo $* | awk -F "." '{print $1}')` adalah untuk mengambil nama file hingga tanda titik. (indikasi .txt) Kemudian disimpan sebagai argumen (`$1`).
 
 `if [[ $1 =~ ^[A-Za-z]+$".txt" ]]` untuk melakukan checking dalam hal penginputan file, dimana file yang diinput hanyalah dapat berupa file yang menggunakan nama berupa alfabet.
@@ -171,9 +185,11 @@ low2=${lower[hour1]}
 
 perintah diatas adalah perintah yang berguna untuk mengubah huruf semula menjadi huruf baru
 
-`rdm="$(LC_CTYPE=C tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c28)" || true` merupakan penentu random value yang hanya mengeluarkan alfanumerik dengan jumlah sepanjang 28 karakter.
+`hour1=$(($hour-1))` adalah penanda 1 jam sebelumnya
 
 Variabel `encrypt` dalam `encrypt="$(echo "$nama" | tr [A-Z] ["$up1"-ZA-"$up2"] | tr [a-z] ["$low1"-za-"$$` adalah sebagai penyimpan hasil enkripsi nama file yang telah disesuaikan dengan waktu pembuatan file tsb. 
+
+`mv $1 "$encrypt".txt` untuk mengubah nama file menjadi nama yang telah dienkripsi
 
 > Password random yang telah kita generate tadinya akan disimpan ke dalam file yang telah dienkripsi. 
 
@@ -199,14 +215,12 @@ up1=${upper[hour]}
 low1=${lower[hour]}
 up2=${upper[hour1]}
 low2=${lower[hour1]}
-random="$(LC_CTYPE=C tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c28)" || true
 decrypt="$(echo "$nama" | tr ["$up1"-ZA-"$up2"] [A-Z] | tr ["$low1"-za-"$low2" [a-z]])"
 mv $1 "$decrypt".txt
 echo "selamat! file anda telah di dekripsi"
 else
 echo "file tidak ditemukan"
 fi
-
 
 ```
 
@@ -240,6 +254,7 @@ done
 ```
 
 - Kita gunakan -a untuk menambahkan lalu -0 untuk mengubah nama file menjadi “pdkt_kusuma_$i” dimana maksud dari $i adalah penomoran (iterasi) -> `sebanyak 28 gambar` saat mendownload gambar. 
+
 - Menggunakan fungsi wget untuk langsung mendownload file yang ada di website dan wget.log untuk menyimpan file yang sudah didownload
 
 ### 3b
@@ -277,25 +292,23 @@ Code
 
 grep "Location" wget.log > location.log
 readarray line < location.log
-
-for i in {1..28}
+for ((i=0; i<28; i++))
 do
-for j in {1..28}
+for ((j=0; j<=i; j++))
 do
 if [ $i == $j ]
 then
 continue
-
 elif [ "${line[$i]}" == "${line[$j]}" ]
 then
-mv pdkt_kusuma_"$i".jpg ./duplicate/duplicate_"$i".jpg
+mv pdkt_kusuma_"$(($i+1))".jpg ./duplicate/duplicate_"$i".jpg
 fi
 done
 done
 
-for i in {1..28}
-do 
-mv pdkt_kusuma_"$i".jpg ./kenangan/kenangan_"$1".jpg
+for ((i=1; i<=28; i++))
+do
+mv pdkt_kusuma_"$i".jpg ./kenangan/kenangan_"$i".jpg
 done
 cp wget.log wget.log.bak
 
